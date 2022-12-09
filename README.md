@@ -12,7 +12,8 @@
 
 5.修改version.h 中版本号为 1.0.2
 
+6.原5寸屏使用project-5inch中的工程，7寸屏使用project-5inch中的工程，新5寸屏使用project-new5inch中的工程
+主要的区别就是bsp_commm_uart.c使用了不同的文件（看app目录中），不用再去修改了。
 
-
-
+7.编译输出的文件全部在output 目录中
 
