@@ -5,6 +5,12 @@
 * 摘要：系统初始化
 * 当前版本：1.0.1
 * 历史版本：1.0.0
+
+//2022-12-09  
+PB7  LCD 亮度的pwm输出
+亮度信息保存在eeprom中，iicbus1（PB10,PB11，模拟使用），地址0x57
+
+
 */
 #include "bsp.h"
 
@@ -15,35 +21,38 @@
 * 返回值：无
 * 备注：FreeRTOS的系统时钟是由滴答定时器提供
 */
-static void systick_config(void)
-{
-    /* setup systick timer for 1000Hz interrupts */
-    if (SysTick_Config(SystemCoreClock / 1000U))
-    {
-        /* capture error */
-        while (1)
-        {
-        }
-    }
-    /* configure the systick handler priority */
-    NVIC_SetPriority(SysTick_IRQn, 0x00U);
-}
+//static void systick_config(void)
+//{
+//    /* setup systick timer for 1000Hz interrupts */
+//    if (SysTick_Config(SystemCoreClock / 1000U))
+//    {
+//        /* capture error */
+//        while (1)
+//        {
+//        }
+//    }
+//    /* configure the systick handler priority */
+//    NVIC_SetPriority(SysTick_IRQn, 0x00U);
+//}
 
 void nvic_config(void)
 {
     // 配置中断分组
-    nvic_priority_group_set(NVIC_PRIGROUP_PRE1_SUB3);
+    nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);
 }
 
 int main()
 {
+	//0. 中断分组初始化
+	nvic_priority_group_set(NVIC_PRIGROUP_PRE4_SUB0);    //2022-09-09 优先级被我修改了，现在只有抢占优先级了！！
+	
     // 外设资源初始化
     bsp_init();
-    // 滴答定时器初始化
-    systick_config();
+//    // 滴答定时器初始化
+//    systick_config();
     // freertos任务创建
     start_freertos();
-
+//	while(1) ;
     return 1;
 }
 

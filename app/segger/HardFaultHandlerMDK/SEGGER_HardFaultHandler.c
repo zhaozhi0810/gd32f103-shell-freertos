@@ -209,7 +209,7 @@ static struct {
 *    C part of the hard fault handler which is called by the assembler
 *    function HardFault_Handler
 */
-void HardFaultHandler(unsigned int* pStack) {
+void HardFault_Handler(unsigned int* pStack) {
   //
   // In case we received a hard fault because of a breakpoint instruction, we return.
   // This may happen when using semihosting for printf outputs and no debugger is connected,

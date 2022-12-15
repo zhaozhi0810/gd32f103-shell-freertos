@@ -186,8 +186,8 @@ static void cli_ts_reset_func(char argc, char *argv)
 
 static void cli_uptime_func(char argc, char *argv)
 {
-    uint32_t val = bsp_get_tick();
-    printf("uptime: %ums\r\n", val);
+//    uint32_t val = bsp_get_tick();
+//    printf("uptime: %ums\r\n", val);
 }
 
 static uint8_t _is_print = 1;

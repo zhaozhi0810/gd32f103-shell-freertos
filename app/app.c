@@ -16,35 +16,32 @@
 */
 void AppTask(void *argument)
 {
-    uint32_t startup_tick;
-    uint32_t startup_s = 0;
-    // 创建comm任务，用于串口通信
-    xTaskCreate(StartCommTask, "comm", 128 * 2, NULL, 2, NULL);
-    // 创建debug任务，用于串口调试
-    xTaskCreate(StartDebugTask, "debug", 128, NULL, 2, NULL);
+//    uint32_t startup_tick;
+//    uint32_t startup_s = 0;
+    bsp_ts_reset();
 
     while (1)
     {
         vTaskDelay(pdMS_TO_TICKS(1000));
-
-        startup_tick = bsp_get_tick();
-
-        if ((startup_tick / 1000) != startup_s)
-        {
-            startup_s = startup_tick / 1000;
-            bsp_led_toggle();  // led灯翻转
-        }
-
+        bsp_led_toggle();  // led灯翻转
     }
 }
 
 void start_freertos(void)
 {
     // 创建AppTask
-    xTaskCreate(AppTask, "app", 128, NULL, 2, NULL);
-    // 启动调度器，任务开始执行
+    xTaskCreate(AppTask, "app", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
+	
+	
+	// 创建comm任务，用于串口通信
+    xTaskCreate(StartCommTask, "comm", configMINIMAL_STACK_SIZE*2, NULL, 4, NULL);  //freetros 数值越大，优先级越高
+    // 创建debug任务，用于串口调试
+    xTaskCreate(StartDebugTask, "debug", configMINIMAL_STACK_SIZE*2, NULL, 3, NULL);
+	
+	xTaskCreate(StartlcdPwmTask, "lcdPwm", configMINIMAL_STACK_SIZE*2, NULL, 2, NULL);
+	// 启动调度器，任务开始执行
     vTaskStartScheduler();
-
+	
     while (1) ;
 }
 
